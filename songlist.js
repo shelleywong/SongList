@@ -1,3 +1,4 @@
+//as soon as the page loads, calls this function
 window.onload = loadList;
 var current = 0;
 var allSongs = [];
@@ -17,7 +18,7 @@ function Song(title,artist,album,year)
   };
   this.listened = 0;
   this.play = function(){
-    listened++;
+    this.listened++;
   };
 }
 
@@ -29,10 +30,12 @@ function loadList()
   allSongs.push(new Song("Get Lucky","Daft Punk","Random Access Memories",2013));
   allSongs.push(new Song("Inevitable","Shakira","Dónde Están los Ladrones?",1998));
   allSongs.push(new Song("Wagon Wheel","Old Crow Medicine Show","Old Crow Medicine Show",2004));
+  displaySong();
 }
 
 //Progresses to the next song to the list, or if the end of the list has been
 //reached, then loop back to the beginning
+//(increments "current" mod(%) arr length: always gives num between 0-4 (arr size 5))
 function nextSong()
 {
   current = (current+1)%allSongs.length;
@@ -40,7 +43,11 @@ function nextSong()
 }
 
 //Show song's information in the "nowPlaying" span
+//toString() function in object allows this to work
 function displaySong()
 {
-  document.getElementById("nowPlaying").innerHTML = allSongs[current].toString();
+  allSongs[current].play();
+  document.getElementById("nowPlaying").innerHTML = allSongs[current].toString()
+    + " - " + allSongs[current].releaseInfo()
+    + "<br>Number of times song played: " + allSongs[current].listened;
 }
